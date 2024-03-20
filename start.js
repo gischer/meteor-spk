@@ -80,7 +80,7 @@ function startMongo(continuation) {
   console.log("** Starting Mongo...");
   var db = child_process.spawn("/bin/mongod",
                                [ "--fork", "--port", mongoPort, "--dbpath", dbPath,
-                                 "--noauth", "--bind_ip", "127.0.0.1", "--nohttpinterface",
+                                 "--noauth", "--bind_ip", "127.0.0.1",
                                  "--storageEngine", "wiredTiger",
                                  "--wiredTigerEngineConfigString",
                                  "log=(prealloc=false,file_max=200KB)",
@@ -196,4 +196,3 @@ if (fs.existsSync(dbPath) && !fs.existsSync(migrationDumpPath)) {
     });
   }
 }
-

@@ -1,10 +1,15 @@
 {
   "name": "meteor-spk-start",
-  "repository": "https://github.com/sandstorm-io/meteor-spk",
   "version": "0.1.0",
-  "private": false,
+  "description": "## Introduction",
+  "main": "start.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gischer/meteor-spk.git"
+  },
+  "license": "ISC",
   "dependencies": {
-    "mongodb": "~2.0",
-    "es6-promise": "~3.0"
+    "es6-promise": "~3.0",
+    "mongodb": "^2.2.36"
   }
 }
