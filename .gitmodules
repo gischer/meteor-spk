@@ -1,8 +1,0 @@
-[submodule "mongo"]
-	path = mongo
-	url = https://github.com/mongodb/mongo.git
-[submodule "niscu"]
-	path = niscu
-	url = https://github.com/kentonv/mongo.git
-	branch = niscu
-

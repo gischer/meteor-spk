@@ -14,6 +14,17 @@ This package provides a tool, `meteor-spk`, which wraps Sandstorm's normal
 `spk` tool as well as Meteor's tools in order to easily package Meteor apps
 to run on Sandstorm.
 
+This version of `meteor-spk` is heavily modified.  Rather than
+pack up a bunch of binaries to be part of the .spk file, it uses the binaries that meteor itself uses in development mode.
+This includes `node`, `npm`, and most importantly `mongo`.
+
+Previous versions had employed a special built version of 
+`mongo`, known as `niscu`, which was built to be smaller, in keeping with the self-contained principle of Sandstorm grains.
+
+This is no longer possible.  Many of the flags used to build niscu do not exist.  So we use the binaries used to run a `meteor` development environment instead.
+
+We also binary encode a couple of support scripts so that `meteor-spk` can now be a single shell script, simplifying installation.
+
 ## Installing the tool
 
 ### Prerequisites
@@ -25,18 +36,11 @@ way to do that is:
 
     curl https://install.sandstorm.io | bash
 
-### Installing `meteor-spk` from binaries
+### Installing `meteor-spk` 
 
-1. Download and unpack
-   [the binary distribution](https://dl.sandstorm.io/meteor-spk-0.6.0.tar.xz),
-   e.g.:
+1. Clone this repo
 
-        mkdir -p ~/projects/meteor-spk
-        cd ~/projects/meteor-spk
-        curl https://dl.sandstorm.io/meteor-spk-0.6.0.tar.xz | tar Jxf -
-        cd meteor-spk-0.6.0
-
-2. Add the directory to your `$PATH`, or symlink the `meteor-spk` script into
+2. Add the directory of your clone to your `$PATH`, or symlink the `meteor-spk` script into
    a directory in your `$PATH`, e.g.:
 
         ln -s $PWD/meteor-spk ~/bin
@@ -45,6 +49,7 @@ way to do that is:
 
 To package your existing Meteor app, do the following:
 
+0. You must have a working meteor application on your build machine.
 1. Run `meteor-spk init` in your app's source tree.
 2. Open the generated file `sandstorm-pkgdef.capnp` in a text editor. Read
    the comments and fill in as appropriate. In particular you will probably
@@ -64,12 +69,6 @@ To package your existing Meteor app, do the following:
 
 ## Tips
 
-* As of version 0.1.5, `meteor-spk` uses Mongo 3.0. Mongo 2.x does not work
-  well for Sandstorm apps as it pre-allocates far too much disk space
-  expecting a large database; Mongo 3.x mostly avoids preallocation. The
-  differences should be invisible to your app. Note that apps built with
-  previous versions of `meteor-spk` can upgrade safely -- old grains will
-  automatically be migrated to Mongo 3 format on their first run.
 * If your app uses accounts, add the package
   [`kenton:accounts-sandstorm`](https://github.com/sandstorm-io/meteor-accounts-sandstorm)
   to integrate with Sandstorm's login system. (See also
@@ -92,13 +91,5 @@ To package your existing Meteor app, do the following:
 
 ### Installing `meteor-spk` from source
 
-1. Check out this github repository. Note that you must use the `--recursive`
-   flag to ensure that submodules are cloned as well:
-
-        git clone --recursive https://github.com/sandstorm-io/meteor-spk.git
-
-2. Run `make`.
-3. Add the directory to your `$PATH`, or symlink the `meteor-spk` script into
-   a directory in your `$PATH`, e.g.:
-
-        ln -s $PWD/meteor-spk ~/bin
+1. Check out this github repository. You can modify the the shell script `meteor-spk` directly.  There are two other important files - `start.js` and `package.json`  If you need
+to modify them, they will need to be b64 encoded and put into `meteor-spk` at the appropriate spot.
